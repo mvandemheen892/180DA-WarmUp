@@ -4,29 +4,21 @@ cap = cv.VideoCapture(0)
 def nothing(x):
     pass
 cv.namedWindow("Trackbars")
-cv.createTrackbar("L - R", "Trackbars", 0, 255, nothing)
-cv.createTrackbar("U - R", "Trackbars", 0, 255, nothing)
-cv.createTrackbar("L - G", "Trackbars", 0, 255, nothing)
-cv.createTrackbar("U - G", "Trackbars", 0, 255, nothing)
-cv.createTrackbar("L - B", "Trackbars", 0, 255, nothing)
-cv.createTrackbar("U - B", "Trackbars", 0, 255, nothing)
+cv.createTrackbar("L - H", "Trackbars", 0, 179, nothing)
+cv.createTrackbar("U - H", "Trackbars", 0, 179, nothing)
 
 while(1):
     # Take each frame
     _, frame = cap.read()
     # Convert BGR to HSV
-    #hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
     # define range of blue color in HSV
-    l_r = cv.getTrackbarPos("L - R", "Trackbars")
-    u_r = cv.getTrackbarPos("U - R", "Trackbars")
-    l_g = cv.getTrackbarPos("L - G", "Trackbars")
-    u_g = cv.getTrackbarPos("U - G", "Trackbars")
-    l_b = cv.getTrackbarPos("L - B", "Trackbars")
-    u_b = cv.getTrackbarPos("U - B", "Trackbars")
-    lower = np.array([l_b,l_g,l_r])
-    upper= np.array([u_b,u_g,u_r])
+    l_h = cv.getTrackbarPos("L - H", "Trackbars")
+    u_h = cv.getTrackbarPos("U - H", "Trackbars")
+    lower = np.array([l_h,100,100])
+    upper= np.array([u_h,255,255])
     # Threshold the HSV image to get only blue colors
-    mask = cv.inRange(frame, lower, upper)
+    mask = cv.inRange(hsv, lower, upper)
     # Bitwise-AND mask and original image
     res = cv.bitwise_and(frame,frame, mask= mask)
     cv.imshow('frame',frame)
