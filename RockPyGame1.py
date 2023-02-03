@@ -112,6 +112,7 @@ def on_message(client, userdata, message):
     if message.topic == "ece180d/rockpaperscissors/servertoplayer1":
         message_to_send=str(message.payload)
         serverMessage=message_to_send[2:-1]
+        print(serverMessage)
         if serverMessage == "cleartosend":
             global recievedClearToSend
             recievedClearToSend = True
@@ -163,6 +164,7 @@ while True:
                 if event.key == K_ESCAPE:
                     running = False
                 elif event.key == K_UP and (not readyToPlay) and recievedClearToSend:
+                    print("keyup")
                     readyToPlay = True
                 elif event.key == K_UP and recievedResults:
                     readyToPlay= False

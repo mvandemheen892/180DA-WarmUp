@@ -5,7 +5,7 @@ def on_connect(client, userdata, flags, rc):
   print("Connection returned result: " + str(rc))
   # Subscribing in on_connect() means that if we lose the connection and
   # reconnect then subscriptions will be renewed.
-  client.subscribe("ece180d/test/group/pub", qos=1)
+  client.subscribe("ece180d/test", qos=1)
   
 # The callback of the client when it disconnects.
 def on_disconnect(client, userdata, rc):
@@ -18,13 +18,13 @@ def on_disconnect(client, userdata, rc):
 def on_message(client, userdata, message):
   #print('Received message: "' + str(message.payload) + '" on topic "' +
    #     message.topic + '" with QoS ' + str(message.qos))
-   if message.topic == "ece180d/test/group/pub":
+   if message.topic == "ece180d/test":
     print('Received message: "' + str(message.payload) + '" on topic "' +
         message.topic + '" with QoS ' + str(message.qos))
-    message_to_send=str(message.payload)
-    message_to_send=message_to_send[2:-1]
-    message_to_sendInt=int(message_to_send)+1
-    client.publish("ece180d/test/group/sub",message_to_sendInt,qos=1)
+    #message_to_send=str(message.payload)
+    #message_to_send=message_to_send[2:-1]
+    #message_to_sendInt=int(message_to_send)+1
+    #client.publish("ece180d/test/group/sub",message_to_sendInt,qos=1)
 # 1. create a client instance.
 client = mqtt.Client()
 # add additional client options (security, certifications, etc.)
