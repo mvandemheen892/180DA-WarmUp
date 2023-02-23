@@ -1,6 +1,8 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import csv
+
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
@@ -60,19 +62,28 @@ with mp_holistic.Holistic(
         shouldery=int(shoulder.y*height)
         cv2.putText(image,str(shoulderx),(shoulderx,shouldery),cv2.FONT_HERSHEY_PLAIN,2,(255,0,0),2)
         
+
+        #box for testing
+        boxcenter=(shoulderx, shouldery+100)
+        boxleft=(boxcenter[0]-50,boxcenter[1]-50)
+        boxright=(boxcenter[0]+50,boxcenter[1]+50)
+        cv2.rectangle(image,boxleft,boxright,(0,255,0),2)
+
         #what side of shoulder
         wtosdistancex=shoulderx-wristx
         wtosdistancey=shouldery-wristy
+        print(wtosdistancex)
+        print(onleftShoulder)
         if wtosdistancex <=0:
             cv2.putText(image,'Left of Shoulder',(10,100),cv2.FONT_HERSHEY_PLAIN,1,(255,0,0),1)
             if not onleftShoulder:
                 previousGesture=2
-                onLeftShoulder=True
+                onleftShoulder=True
         else:
             cv2.putText(image,'Right of Shoulder',(10,100),cv2.FONT_HERSHEY_PLAIN,1,(255,0,0),1)
-            if onLeftShoulder:
+            if onleftShoulder:
                 previousGesture=1
-                onLeftShoulder=False
+                onleftShoulder=False
         if wtosdistancey <=0:
             cv2.putText(image,'Below Shoulder',(10,200),cv2.FONT_HERSHEY_PLAIN,1,(255,0,0),1)
             if not belowShoulder:
@@ -125,12 +136,13 @@ with mp_holistic.Holistic(
         #     cv2.putText(image,"Other",(100,100),cv2.FONT_HERSHEY_PLAIN,2,(255,0,0),2)
         #     print("other")
         # flippedimage =cv2.flip(image, 1)
-        cv2.putText(image,str(velox),(wristx,wristy -1),cv2.FONT_HERSHEY_PLAIN,2,(255,0,0),2)
+        #cv2.putText(image,str(velox),(wristx,wristy -1),cv2.FONT_HERSHEY_PLAIN,2,(255,0,0),2)
         # Flip the image horizontally for a selfie-view display.
     except:
+        print("there was an exception")
         pass
-
     cv2.imshow('MediaPipe Holistic', image)
+
     if cv2.waitKey(5) & 0xFF == 27:
       break
 cap.release()
